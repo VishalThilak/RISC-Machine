@@ -1,49 +1,60 @@
-# RISC Machine Project
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/hfeqw4fM)
+[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=13032161&assignment_repo_type=AssignmentRepo)
+# starter-lab-7
 
-## Overview
+See the Lab 7 handout on Piazza for details of what you need to do and what files
+need to be included.  
 
-This project focuses on designing and building a Reduced Instruction Set Computer (RISC) architecture using synthesizable Verilog HDL. The RISC machine is designed with modular components and incorporates instruction pipelining to improve performance. It supports a subset of ARMv7 instructions and includes features like a datapath, instruction memory, register file, and memory-mapped I/O.
+The directory "assembler" includes source code for 'sas', a program you can use
+to automatically convert assembly code into programs to load into memory.  See
+further details in assembler/README.txt.  To build 'sas' from the provided source
+on your Windows computer, you may need to install cygwin.  Instructions for doing
+this can be found in the file cygwinlab7.pdf availalbe on Piazza.
 
-## Key Features
+DE1_SoC.qsf includes pins assignments (import in Quartus before synthesis using the 
+same procedure used for pb-pins.csv outline in the HDL tutorial). Do not modify this
+file.
 
-### Core Components
-1. **CPU Controller:** Manages the execution process through a finite-state machine, coordinating instruction fetch, decode, execute, memory access, and write-back stages.
-2. **RAM Module:** Stores program instructions and data, while supporting memory-mapped I/O for device interaction.
-3. **Arithmetic Logic Unit (ALU):** Handles essential operations such as addition, subtraction, and comparisons.
-4. **Register File:** Provides high-speed access to general-purpose registers for efficient execution.
-5. **Instruction Decoder:** Interprets binary instructions and generates control signals for ARMv7 operations, including CMP, SUB, LDR, and STR.
+You will need to create your own lab7_top.sv to demo/test your design on your
+DE1-SoC.
 
+Use lab7_autograder_check.sv to test your code is compatible with the
+autograder that will be used to assign marks for your submission.  WARNING: The
+purpose of the checker file is NOT to tell you if your code is ``correct''.  If
+your code does not passing the checks in this file means your code will
+certainly get zero marks for the autograded portion.  Passing the checks in
+this file DOES NOT mean your code will get full marks.  Your code can pass
+these checks and get zero marks.  You still need to test your code using your
+own test benches!
 
-### Data Flow and Pipelining
-1. **Datapath Design:** Ensures smooth data transfer between components like the ALU, register file, and RAM. The datapath facilitates efficient execution across all pipeline stages.
-2. **Pipelined Execution:** Implements a multi-stage pipeline to enhance instruction throughput, minimizing hazards and improving overall performance.
+Below is a (potentially incomplete) summary of files you need to add (check the 
+lab 5, 6 and 7 handout instructions for details on what goes in these and any other
+necessary files):
 
-### Supported Instructions
-1. **Arithmetic and Logical Operations:** Includes basic operations like CMP (compare) and SUB (subtract).
-2. **Memory Access:** Features LDR (load) and STR (store) for moving data between the CPU and memory.
-3. **Control Operation:** Supports HALT to stop execution safely.
+1. Your synthesizable and testbench code in files named:
+- cpu.sv
+- cpu_tb.sv
+- regfile.sv
+- alu.sv
+- shifter.sv
+- datapath.sv
+- datapath_tb.sv
 
-## Testing and Validation
+You can also include additional (system)verilog files for the logic instantiated in cpu.sv
+(e.g., for your controller and/or instruction register).
 
-1. **Simulation with Test Benches:** Verified the functionality of each component and instruction set using ModelSim. Extensive test cases were written to ensure the design operates reliably.
-2. **FPGA Deployment:** The RISC design was synthesized for the DE1-SoC FPGA board. LEDs and switches were used for real-time debugging and output validation.
-3. **Assembler Integration:** An assembler was used to convert assembly code into machine-readable instructions, enabling systematic testing of individual commands.
+2. A Quartus Project File (.qpf) and the associated Quartus Settings File
+   (.qsf) that indicates which Verilog files are part of your project when
+compiling for your DE1-SoC. This .qsf file is created by Quartus when you
+create a project.  It is typically named <top_leve_module_name>.qsf (e.g.,
+lab6_top.qsf) and contains lines indicating which Verilog files are to be
+synthesized.
 
-## How to Use
+2. A Modelsim Project File (.mpf) for your testbench simulations including
+all synthesizable code files.
 
-### Prerequisites
+3. The binary output file (.sof), generated from your synthesizable SystemVerilog
+ used to program your DE1-SoC.  Your TAs may ask you to use the .sof generated when the 
+autograder synthesizes your design, if we have it available in time. However, include
+the one you generated as a backup to speed up the marking process during your demo.  
 
-- Verilog simulation tools like ModelSim
-- Quartus software for synthesis and FPGA programming
-- DE1-SoC FPGA board for hardware testing
-
-### Steps to Run the Project
-
-1. Clone the repository containing the Verilog code and supporting files.
-2. Open the project in Quartus and compile it to generate the bitstream.
-3. Simulate the design in ModelSim using provided test benches to verify behavior.
-4. Upload the design onto the DE1-SoC FPGA and use on-board switches and LEDs for testing.
-
-## Author
-
-Vishal Thilak
